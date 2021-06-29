@@ -11,34 +11,28 @@ const teamMemberArray = [];
 
 // Taken back to main menu
 const promptMainMenu = () => {
-    
-    return inquirer.prompt([
-        {
-            type: 'confirm',
-            name: 'addTeamMember',
-            message: 'Would you like to add another employee?',
-            default: false,
-        
-        },
+    inquirer.prompt([
+
         {
             type: 'list',
             name: 'whichTeamMem',
-            message: 'Would you like to add an engineer or an intern?',
-            choices: ['Manager', 'Engineer', 'Intern'],
+            message: 'Select additional team member to add:',
+            choices: ["Engineer", "Intern", "Team Finished"],
         }, ])
         .then(responses => {
-            console.log(responses)
-            // if the user wants to add an engineer:
-            if (responses.whichTeamMem[0]) {
-                // call Engineer prompt
-                return promptManager();
+            console.log("Your choice: " + responses)
+            switch(responses.whichTeamMem) {
+                case "Engineer":
+                    promptEngineer();
+                    break;
 
-            } else if (responses.whichTeamMem[1]) {
-                // call engineer prompt
-                return promptEngineer();
-
-            } else {
-                return promptIntern();
+                case "Intern":
+                    promptIntern();
+                    break;
+                
+                case "Team Finished": 
+                    generateTeam();
+                    break;                
             }
         })
 };
@@ -191,15 +185,24 @@ const promptManager = () => {
                 type: 'input',
                 name: 'officeNum',
                 message: "Enter the manager's office number:",
+                default:"",
+                validate: userInput => {
+                    if (validator.isNumeric(userInput)) {
+                        return true;
+                    }
+                    return "Please enter a valid number."
+                }
             },
             // WHEN I enter the team manager’s name, employee ID, email address, and office number
             // THEN I am presented with a menu with the option to add an engineer or an intern or to finish building my team
             // 
         ])
         .then(response => {
-            const MyNewEmployee = new Manager(response.name, response.idNumber, response.email, response.officeNum)
-            teamMemberArray.push(MyNewEmployee)
-            console.log("Review the user inputs: " + response)
+            
+            const MyNewEmployee = new Manager(response.name, response.idNumber, response.email, response.officeNum);
+            teamMemberArray.push(MyNewEmployee);
+            console.log("User Inputs: " + MyNewEmployee);
+            console.log("New Array: " + teamMemberArray);
            // what do you want to do next/ 
             promptMainMenu()
 
@@ -215,7 +218,9 @@ const promptManager = () => {
 // my option funciton
 // do you want to build a ___ ___ __
 // inquirer prompt
+const generateTeam = () => {
 
+}
 promptManager();
 
 // WHEN I am prompted for my team members and their information
