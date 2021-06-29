@@ -355,7 +355,7 @@ const generateTeam = (teamArray) => {
     cardArray.push(
         teamArray
         .filter(teamMember => teamMember.getRole() === "Intern")
-        .map(manager => generateinternHTML(intern))
+        .map(intern => generateInternHTML(intern))
     )
 
     return cardArray;
@@ -395,7 +395,7 @@ const template = `
 </html>
 `;
 
-fs.writeFile('./', template, (error, data) =>
+fs.writeFile('./dist/index.html', template, (error, data) =>
   error ? console.error(error) : console.log(data)
 );
 
