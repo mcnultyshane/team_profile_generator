@@ -1,24 +1,39 @@
 // GIVEN a command-line application that accepts user input
 const inquirer = require('inquirer');
 const fs = require('fs');
+const Employee = require("./lib/Employee");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const Manager = require("./lib/Manager");
 
 // Taken back to main menu
 const promptMainMenu = () => {
-    return inquirer.prompt([{
+    
+    return inquirer.prompt([
+        {
+            type: 'confirm',
+            name: 'addTeamMember',
+            message: 'Would you like to add another employee?',
+            default: false,
+        },
+        {
             type: 'list',
             name: 'whichTeamMem',
             message: 'Would you like to add an engineer or an intern?',
-            choices: ['Engineer', 'Intern'],
+            choices: ['Manager', 'Engineer', 'Intern'],
         }, ])
         .then(responses => {
             console.log(responses)
             // if the user wants to add an engineer:
             if (responses.whichTeamMem[0]) {
                 // call Engineer prompt
+                return promptManager();
+
+            } else if (responses.whichTeamMem[1]) {
+                // call engineer prompt
                 return promptEngineer();
 
             } else {
-                // call engineer prompt
                 return promptIntern();
             }
         })
@@ -49,12 +64,12 @@ const promptIntern = () => {
             },
             // WHEN I enter the team manager’s name, employee ID, email address, and office number
             // THEN I am presented with a menu with the option to add an engineer or an intern or to finish building my team
-            {
-                type: 'confirm',
-                name: 'intAddTeamMember',
-                message: 'Would you like to add another employee?',
-                default: false,
-            },
+            // {
+            //     type: 'confirm',
+            //     name: 'intAddTeamMember',
+            //     message: 'Would you like to add another employee?',
+            //     default: false,
+            // },
             // {
             //     type: 'list',
             //     name: 'whichTeamMem',
@@ -65,14 +80,14 @@ const promptIntern = () => {
         .then(IntResponses => {
             console.log(IntResponses)
             // if the user wants to add an employee:
-            if (IntResponses.intAddTeamMember[0]) {
-                // they are asked which employee:
-                return promptMainMenu ()
+            // if (IntResponses.intAddTeamMember[0]) {
+            //     // they are asked which employee:
+            //     return promptMainMenu ()
                     
-            } else {
-                return Intresponses
-                // render manager page to html
-            }
+            // } else {
+            //     return Intresponses
+            //     // render manager page to html
+            // }
         })
 };
 
@@ -100,30 +115,31 @@ const promptEngineer = () => {
                 message: "Enter the engineer's gitHub username:",
             },
             // return back to main menu?
-            {
-                type: 'confirm',
-                name: 'engAddTeamMember',
-                message: 'Would you like to add another employee?',
-                default: false,
-            },
+            // {
+            //     type: 'confirm',
+            //     name: 'engAddTeamMember',
+            //     message: 'Would you like to add another employee?',
+            //     default: false,
+            // },
         ])
         .then(engResponses => {
-            console.log(engResponses)
-            // if the user wants to add an employee:
-            if (engResponses.engAddTeamMember) {
-                // they are asked which employee:
-                return promptMainMenu ()
+            // console.log(engResponses)
+            // // if the user wants to add an employee:
+            // if (engResponses.engAddTeamMember) {
+            //     // they are asked which employee:
+            //     return promptMainMenu ()
                     
-            } else {
-                return engResponses
-                // render manager page to html
-            }
+            // } else {
+            //     return engResponses
+            //     // render manager page to html
+            // }
         })
 };
 
 // WHEN I start the application
 // THEN I am prompted to enter the team manager’s name, employee ID, email address, and office number
 const promptManager = () => {
+    console.log("Welcome to the Team Builder");
     return inquirer.prompt([{
                 type: 'input',
                 name: 'name',
@@ -146,27 +162,30 @@ const promptManager = () => {
             },
             // WHEN I enter the team manager’s name, employee ID, email address, and office number
             // THEN I am presented with a menu with the option to add an engineer or an intern or to finish building my team
-            {
-                type: 'confirm',
-                name: 'addTeamMember',
-                message: 'Would you like to add another employee?',
-                default: false,
-            },
+            // 
         ])
-        .then(responses => {
-            // const MyNewEmployee = new ????
-            console.log(responses)
-            // if the user wants to add an employee:
-            if (responses.addTeamMember) {
-                // they are asked which employee:
-                return promptMainMenu()
+        .then(response => {
+            const MyNewEmployee = new Manager
+            console.log(response)
+           // what do you want to do next/ 
+           return promptMainMenu()
 
-            } else {
-                return mgmtResponses
-                // render manager page to html
-            }     
+
+            // if the user wants to add an employee:
+            // if (response.addTeamMember) {
+            //     // they are asked which employee:
+            
+
+            // } else {
+            //     return mgmtResponses
+            //     // render manager page to html
+            // }     
         });
     }
+// my option funciton
+// do you want to build a ___ ___ __
+// inquirer prompt
+
 promptManager();
 
 // WHEN I am prompted for my team members and their information
