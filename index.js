@@ -8,7 +8,7 @@ const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
 
 // empty array for input Data
-const teamMemberArray = [];
+const teamArray = [];
 
 // function for adding additional team members(main menu return)
 const promptMainMenu = () => {
@@ -101,7 +101,7 @@ const promptIntern = () => {
             console.log("These are the Intern Inputs: " + JSON.stringify(intResponses))
             const MyNewIntern = new Intern(intResponses.intName, intResponses.intIdNumber, intResponses.intEmail, intResponses.schoolIntern)
             console.log("Intern Inputs: " + intResponses);
-            teamMemberArray.push(MyNewIntern);
+            teamArray.push(MyNewIntern);
 
             promptMainMenu();
 
@@ -150,7 +150,7 @@ const promptEngineer = () => {
         .then(engResponses => {
             const MyNewEngineer = new Engineer(engResponses.engName, engResponses.engIdNum, engResponses.engEmail, engResponses.engGithub)
             console.log("Engineer Inputs: " + engResponses)
-            teamMemberArray.push(MyNewEngineer);
+            teamArray.push(MyNewEngineer);
 
             promptMainMenu();
 
@@ -209,9 +209,9 @@ const promptManager = () => {
         .then(response => {
             const MyNewEmployee = new Employee(response.name, response.iDNumber, response.email);
             const MyNewManager = new Manager(response.name, response.iDNumber, response.email, response.officeNum);
-            teamMemberArray.push(MyNewManager);
+            teamArray.push(MyNewManager);
             console.log("User Inputs: " + MyNewEmployee);
-            console.log("New Array: " + teamMemberArray);
+            console.log("New Array: " + teamArray);
             // what do you want to do next/ 
             promptMainMenu()
 
@@ -233,80 +233,137 @@ const promptManager = () => {
 
 // WHEN I am prompted for my team members and their information
 // THEN an HTML file is generated that displays a nicely formatted team roster based on user input
-const generateTeam = () => {
-    console.log(teamMemberArray);
+const generateTeam = (teamArray) => {
+    function generateManagerHTML(manager) {
+        return ` 
+        <div class="column is-4">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title is-centered has-background-warning is-size-4">
+                        ${manager.getRole()}
+                    </p>
+                </header>
+                <div class="card-content has-background-white-ter">
+                    <div class="media">
+                        <div class="media-left">
+                            <figure class="image">
+                                <i class="fas fa-business-time is-size-1"></i>
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <p class="title is-5">${manager.getName()}</p>
+                            <p class="subtitle is-6 ">ID #: </p>
+    
+                        </div>
+                    </div>
+                    <div class="content">
+                        Email: <a href="mailto:${manager.getEmail()}">${manager.getEmail()}<i title="Email"
+                                class="is-6 is-clickable"></i>
+                        </a>
+                        <br>
+                        Office Number: ${manager.getOfficeNum()}
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+    }
+
+    function generateEngineerHTML(engineer) {
+        return `
+        <div class="column is-4">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title is-centered has-background-warning is-size-4">
+                        ${engineer.getRole()}
+                    </p>
+                </header>
+            <div class="card-content has-background-white-ter">
+                <div class="media">
+                    <div class="media-left">
+                        <figure class="image">
+                            <i class="far fa-file-code is-size-1"></i>
+                        </figure>
+                    </div>
+                    <div class="media-content">
+                        <p class="title is-5">${engineer.getname()}</p>
+                        <p class="subtitle is-6 ">ID #:${engineer.getID()} </p>
+        
+                    </div>
+                </div>
+                <div class="content">
+                    Email: <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}<i title="Email"
+                            class="is-6 is-clickable"></i>
+                    </a>
+                    <br>
+                    Github Username:
+                    <a class="is-clickable" href="github.com/${engineer.getGithub()}">Github account: ${engineer.getGithub()}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+        `;
+    }
+
+    function generateInternHTML(intern) {
+        return `
+    <div class="column is-4">
+        <div class="card">
+            <header class="card-header">
+                <p class="card-header-title is-centered has-background-warning is-size-4">
+                    ${intern.getRole()}
+                </p>
+            </header>
+            <div class="card-content has-background-white-ter">
+                <div class="media">
+                    <div class="media-left">
+                        <figure class="image">
+                            <i class="fas fa-user-graduate is-size-1"></i>
+                        </figure>
+                    </div>
+                    <div class="media-content">
+                        <p class="title is-5">${intern.getName()}</p>
+                        <p class="subtitle is-6 ">ID #: ${intern.getID()}</p>
+
+                    </div>
+                </div>
+                <div class="content">
+                    Email: <a href="mailto:${intern.getEmail()}">${intern.getEmail()}<i title="Email"
+                            class="is-6 is-clickable"></i>
+                    </a>
+                    <br>
+                    University: ${intern.getSchool()}
+                </div>
+            </div>
+        </div>
+    </div>
+        `;
+    }
+
+    const cardArray = [];
+
+    cardArray.push(
+        teamArray
+        .filter(teamMember => teamMember.getRole() === "Manager")
+        .map(manager => generateManagerHTML(manager))
+    )
+    cardArray.push(
+        teamArray
+        .filter(teamMember => teamMember.getRole() === "Engineer")
+        .map(engineer => generateEngineerHTML(engineer))
+    )
+    cardArray.push(
+        teamArray
+        .filter(teamMember => teamMember.getRole() === "Intern")
+        .map(manager => generateinternHTML(intern))
+    )
+
+    return cardArray;
 
 }
 
-function renderTeam(teamMemberArray){
-    const manager = teamMemberArray.map(() => ` 
-    <div class="column is-4">
-    <div class="card">
-        <header class="card-header">
-            <p class="card-header-title is-centered has-background-warning is-size-4">
-                ${getRole(Manager)}
-            </p>
-        </header>
-        <div class="card-content has-background-white-ter">
-            <div class="media">
-                <div class="media-left">
-                    <figure class="image">
-                        <i class="fas fa-business-time is-size-1"></i>
-                    </figure>
-                </div>
-                <div class="media-content">
-                    <p class="title is-5">${getName(Manager)}</p>
-                    <p class="subtitle is-6 ">ID #: </p>
 
-                </div>
-            </div>
-            <div class="content">
-                Email: <a href="mailto:${getEmail(Manager)}">${getEmail(Manager)}<i title="Email"
-                        class="is-6 is-clickable"></i>
-                </a>
-                <br>
-                Office Number: ${getOfficeNum(Manager)}
-            </div>
-        </div>
-    </div>
-</div>`);
-    return manager;
- 
-function rendereng(engineer){
-    const engDiv = teamMemberArray.map(() => `<div class="card">
-    <header class="card-header">
-        <p class="card-header-title is-centered has-background-warning is-size-4">
-            ${getRole(Engineer)}
-        </p>
-    </header>
-    <div class="card-content has-background-white-ter">
-        <div class="media">
-            <div class="media-left">
-                <figure class="image">
-                    <i class="far fa-file-code is-size-1"></i>
-                </figure>
-            </div>
-            <div class="media-content">
-                <p class="title is-5">${getname(Employee)}</p>
-                <p class="subtitle is-6 ">ID #:${getID(Employee)} </p>
-
-            </div>
-        </div>
-        <div class="content">
-            Email: <a href="mailto:${getEmail(Employee)}">${getEmail(Employee)}<i title="Email"
-                    class="is-6 is-clickable"></i>
-            </a>
-            <br>
-            Github Username:
-            <a class="is-clickable" href="github.com/${getGithub(Engineer)}">Github account: ${getGithub(Engineer)}</a>
-        </div>
-    </div>
-</div>` 
-    );
-    return engDiv;
-};
-
-const template = '
+const template = `
 <!DOCTYPE html>
 <html lang="en">
 
@@ -330,9 +387,16 @@ const template = '
     </section>
 
 
-    <div class="columns mt-1 is-flex-direction-row is-flex-wrap-wrap is-justify-content-center"></div>'
+    <div class="columns mt-1 is-flex-direction-row is-flex-wrap-wrap is-justify-content-center">
+    ${generateTeam(cardArray)}
+    </div>
+</body>
+
+</html>
+`;
+
+fs.writeFile('./', template, (error, data) =>
+  error ? console.error(error) : console.log(data)
+);
 
 promptManager();
-
-
-
