@@ -6,13 +6,11 @@ const Employee = require("./lib/Employee");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
-// const {
-//     generate
-// } = require('rxjs');
 
+// empty array for input Data
 const teamMemberArray = [];
 
-// Taken back to main menu
+// function for adding additional team members(main menu return)
 const promptMainMenu = () => {
     inquirer.prompt([
 
@@ -232,23 +230,14 @@ const promptManager = () => {
             }
         });
 }
-// my option funciton
-// do you want to build a ___ ___ __
-// inquirer prompt
+
+// WHEN I am prompted for my team members and their information
+// THEN an HTML file is generated that displays a nicely formatted team roster based on user input
 const generateTeam = () => {
     console.log(teamMemberArray);
 
 }
 promptManager();
 
-// WHEN I am prompted for my team members and their information
-// THEN an HTML file is generated that displays a nicely formatted team roster based on user input
 
-// WHEN I decide to finish building my team
-// THEN I exit the application, and the HTML is generated
 
-// WHEN I click on the GitHub username
-// THEN that GitHub profile opens in a new tab
-
-// WHEN I click on an email address in the HTML
-// THEN my default email program opens and populates the TO field of the email with the address
