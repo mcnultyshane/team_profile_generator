@@ -1,6 +1,6 @@
-// const Algo = require("../algo");
+const Employee = require("../lib/Employee");
 
-// describe("Algo", () => {
+// describe("Employee", () => {
 //   describe("reverse", () => {
 //     // 'reverse' should reverse "Hello World!"
 //     it("should reverse a given string", () => {

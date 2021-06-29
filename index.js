@@ -98,7 +98,7 @@ const promptIntern = () => {
             },
         ])
         .then(intResponses => {
-            console.log("These are the Intern Inputs: " + intResponses)
+            console.log("These are the Intern Inputs: " + JSON.stringify(intResponses))
             const MyNewIntern = new Intern(intResponses.intName, intResponses.intIdNumber, intResponses.intEmail, intResponses.schoolIntern)
             console.log("Intern Inputs: " + intResponses);
             teamMemberArray.push(MyNewIntern);
@@ -208,7 +208,7 @@ const promptManager = () => {
         ])
         .then(response => {
             const MyNewEmployee = new Employee(response.name, response.iDNumber, response.email);
-            const MyNewManager = new Manager(response.name, response.idNumber, response.email, response.officeNum);
+            const MyNewManager = new Manager(response.name, response.iDNumber, response.email, response.officeNum);
             teamMemberArray.push(MyNewManager);
             console.log("User Inputs: " + MyNewEmployee);
             console.log("New Array: " + teamMemberArray);
@@ -237,6 +237,101 @@ const generateTeam = () => {
     console.log(teamMemberArray);
 
 }
+
+function renderTeam(teamMemberArray){
+    const manager = teamMemberArray.map(() => ` 
+    <div class="column is-4">
+    <div class="card">
+        <header class="card-header">
+            <p class="card-header-title is-centered has-background-warning is-size-4">
+                ${getRole(Manager)}
+            </p>
+        </header>
+        <div class="card-content has-background-white-ter">
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image">
+                        <i class="fas fa-business-time is-size-1"></i>
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <p class="title is-5">${getName(Manager)}</p>
+                    <p class="subtitle is-6 ">ID #: </p>
+
+                </div>
+            </div>
+            <div class="content">
+                Email: <a href="mailto:${getEmail(Manager)}">${getEmail(Manager)}<i title="Email"
+                        class="is-6 is-clickable"></i>
+                </a>
+                <br>
+                Office Number: ${getOfficeNum(Manager)}
+            </div>
+        </div>
+    </div>
+</div>`);
+    return manager;
+ 
+function rendereng(engineer){
+    const engDiv = teamMemberArray.map(() => `<div class="card">
+    <header class="card-header">
+        <p class="card-header-title is-centered has-background-warning is-size-4">
+            ${getRole(Engineer)}
+        </p>
+    </header>
+    <div class="card-content has-background-white-ter">
+        <div class="media">
+            <div class="media-left">
+                <figure class="image">
+                    <i class="far fa-file-code is-size-1"></i>
+                </figure>
+            </div>
+            <div class="media-content">
+                <p class="title is-5">${getname(Employee)}</p>
+                <p class="subtitle is-6 ">ID #:${getID(Employee)} </p>
+
+            </div>
+        </div>
+        <div class="content">
+            Email: <a href="mailto:${getEmail(Employee)}">${getEmail(Employee)}<i title="Email"
+                    class="is-6 is-clickable"></i>
+            </a>
+            <br>
+            Github Username:
+            <a class="is-clickable" href="github.com/${getGithub(Engineer)}">Github account: ${getGithub(Engineer)}</a>
+        </div>
+    </div>
+</div>` 
+    );
+    return engDiv;
+};
+
+const template = '
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <title>Document</title>
+</head>
+
+<body class="container"></body>
+    <section class="hero is-primary has-text-centered">
+        <div class="hero-body">
+            <p class="title is-size-1 has-text-weight-bold	">
+                Team Line-up
+            </p>
+
+        </div>
+    </section>
+
+
+    <div class="columns mt-1 is-flex-direction-row is-flex-wrap-wrap is-justify-content-center"></div>'
+
 promptManager();
 
 
