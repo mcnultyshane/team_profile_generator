@@ -1,10 +1,13 @@
 // GIVEN a command-line application that accepts user input
 const inquirer = require('inquirer');
 const fs = require('fs');
+const validator = require('validator');
 const Employee = require("./lib/Employee");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
+
+const teamMemberArray = [];
 
 // Taken back to main menu
 const promptMainMenu = () => {
@@ -15,6 +18,7 @@ const promptMainMenu = () => {
             name: 'addTeamMember',
             message: 'Would you like to add another employee?',
             default: false,
+        
         },
         {
             type: 'list',
@@ -45,17 +49,24 @@ const promptIntern = () => {
     return inquirer.prompt([{
                 type: 'input',
                 name: 'intName',
-                message: "Enter employee's name",
+                message: "Enter intern's name:",
+                default: "",
+                validate: userInput => {
+                    if (userInput !== "") {
+                        return true
+                    }
+                    return "You have to provide an employee name"
+                }
             },
             {
                 type: 'input',
                 name: 'intIdNumber',
-                message: "Enter employee ID number:",
+                message: "Enter intern's employee ID number:",
             },
             {
                 type: 'input',
                 name: 'intEmail',
-                message: "Enter employee's email address:",
+                message: "Enter intern's email address:",
             },
             {
                 type: 'input',
@@ -78,7 +89,7 @@ const promptIntern = () => {
             // },
         ])
         .then(IntResponses => {
-            console.log(IntResponses)
+            console.log("These are the Intern Inputs: " + IntResponses)
             // if the user wants to add an employee:
             // if (IntResponses.intAddTeamMember[0]) {
             //     // they are asked which employee:
@@ -97,7 +108,14 @@ const promptEngineer = () => {
     return inquirer.prompt([{
                 type: 'input',
                 name: 'engName',
-                message: "Enter employee's name",
+                message: "Enter employee's name:",
+                default: "",
+                validate: userInput => {
+                    if (userInput !== "") {
+                        return true
+                    }
+                    return "You have to provide an employee name"
+                }
             },
             {
                 type: 'input',
@@ -139,16 +157,30 @@ const promptEngineer = () => {
 // WHEN I start the application
 // THEN I am prompted to enter the team manager’s name, employee ID, email address, and office number
 const promptManager = () => {
-    console.log("Welcome to the Team Builder");
+    console.log("Welcome to the Team Builder.");
     return inquirer.prompt([{
                 type: 'input',
                 name: 'name',
-                message: "Enter employee's name",
+                message: "Enter employee's name:",
+                default: "",
+                validate: userInput => {
+                    if (userInput !== "") {
+                        return true
+                    }
+                    return "You have to provide an employee name"
+                }
             },
             {
                 type: 'input',
                 name: 'iDNumber',
                 message: "Enter employee ID number:",
+                default:"",
+                validate: userInput => {
+                    if (validator.isNumeric(userInput)) {
+                        return true;
+                    }
+                    return "Please enter a valid number."
+                }
             },
             {
                 type: 'input',
@@ -165,21 +197,19 @@ const promptManager = () => {
             // 
         ])
         .then(response => {
-            const MyNewEmployee = new Manager
-            console.log(response)
+            const MyNewEmployee = new Manager(response.name, response.idNumber, response.email, response.officeNum)
+            teamMemberArray.push(MyNewEmployee)
+            console.log("Review the user inputs: " + response)
            // what do you want to do next/ 
-           return promptMainMenu()
+            promptMainMenu()
 
-
-            // if the user wants to add an employee:
-            // if (response.addTeamMember) {
-            //     // they are asked which employee:
-            
-
-            // } else {
-            //     return mgmtResponses
-            //     // render manager page to html
-            // }     
+            .catch(error => {
+                if (error.isTtyError) {
+                    return console.log(error.message)
+                } else {
+                    return "unknown error involved"
+                }
+            })
         });
     }
 // my option funciton
