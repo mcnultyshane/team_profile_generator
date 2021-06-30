@@ -355,7 +355,7 @@ const generateTeam = (teamArray) => {
         .map(intern => generateInternHTML(intern))
     )
 
-    return cardArray; 
+    return; 
 }
 
 
