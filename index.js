@@ -28,7 +28,7 @@ const promptManager = () => {
             },
             {
                 type: 'input',
-                name: 'iDNumber',
+                name: 'idNumber',
                 message: "Enter employee ID number:",
                 default: "",
                 validate: userInput => {
@@ -60,8 +60,8 @@ const promptManager = () => {
             // 
         ])
         .then(response => {
-            const MyNewEmployee = new Employee(response.name, response.iDNumber, response.email);
-            const MyNewManager = new Manager(response.name, response.iDNumber, response.email, response.officeNum);
+            const MyNewEmployee = new Employee(response.name, response.idNumber, response.email);
+            const MyNewManager = new Manager(response.name, response.idNumber, response.email, response.officeNum);
             teamArray.push(MyNewManager);
             console.log("User Inputs: " + MyNewEmployee);
             console.log("New Array: " + teamArray);
