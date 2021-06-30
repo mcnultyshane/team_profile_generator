@@ -10,10 +10,83 @@ const Manager = require("./lib/Manager");
 // empty array for input Data
 const teamArray = [];
 
+// WHEN I start the application
+// THEN I am prompted to enter the team manager’s name, employee ID, email address, and office number
+const promptManager = () => {
+    console.log("Welcome to the Team Builder.");
+    return inquirer.prompt([{
+                type: 'input',
+                name: 'name',
+                message: "Enter employee's name:",
+                default: "",
+                validate: userInput => {
+                    if (userInput !== "") {
+                        return true
+                    }
+                    return "You have to provide an employee name"
+                }
+            },
+            {
+                type: 'input',
+                name: 'iDNumber',
+                message: "Enter employee ID number:",
+                default: "",
+                validate: userInput => {
+                    if (validator.isNumeric(userInput)) {
+                        return true;
+                    }
+                    return "Please enter a valid number."
+                }
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: "Enter employee's email address:",
+            },
+            {
+                type: 'input',
+                name: 'officeNum',
+                message: "Enter the manager's office number:",
+                default: "",
+                validate: userInput => {
+                    if (validator.isNumeric(userInput)) {
+                        return true;
+                    }
+                    return "Please enter a valid number."
+                }
+            },
+            // WHEN I enter the team manager’s name, employee ID, email address, and office number
+            // THEN I am presented with a menu with the option to add an engineer or an intern or to finish building my team
+            // 
+        ])
+        .then(response => {
+            const MyNewEmployee = new Employee(response.name, response.iDNumber, response.email);
+            const MyNewManager = new Manager(response.name, response.iDNumber, response.email, response.officeNum);
+            teamArray.push(MyNewManager);
+            console.log("User Inputs: " + MyNewEmployee);
+            console.log("New Array: " + teamArray);
+            // what do you want to do next/ 
+            promptMainMenu()
+
+                .catch(error => {
+                    if (error.isTtyError) {
+                        return console.log(error.message)
+                    } else {
+                        return "unknown error involved"
+                    }
+                })
+        }).catch(error => {
+            if (error.isTtyError) {
+                return console.log(error.message)
+            } else {
+                return "unknown error involved"
+            }
+        });
+}
+
 // function for adding additional team members(main menu return)
 const promptMainMenu = () => {
     inquirer.prompt([
-
             {
                 type: 'list',
                 name: 'whichTeamMem',
@@ -22,7 +95,7 @@ const promptMainMenu = () => {
             },
         ])
         .then(responses => {
-            console.log("Your choice: " + responses)
+            console.log("Your choice: " + responses.toString())
             switch (responses.whichTeamMem) {
                 case "Engineer":
                     promptEngineer();
@@ -149,7 +222,7 @@ const promptEngineer = () => {
         ])
         .then(engResponses => {
             const MyNewEngineer = new Engineer(engResponses.engName, engResponses.engIdNum, engResponses.engEmail, engResponses.engGithub)
-            console.log("Engineer Inputs: " + engResponses)
+            console.log("Engineer Inputs: " + JSON.stringify(engResponses.engName, engResponses.engIdNum, engResponses.engEmail, engResponses.engGithub))
             teamArray.push(MyNewEngineer);
 
             promptMainMenu();
@@ -157,83 +230,10 @@ const promptEngineer = () => {
         })
 };
 
-// WHEN I start the application
-// THEN I am prompted to enter the team manager’s name, employee ID, email address, and office number
-const promptManager = () => {
-    console.log("Welcome to the Team Builder.");
-    return inquirer.prompt([{
-                type: 'input',
-                name: 'name',
-                message: "Enter employee's name:",
-                default: "",
-                validate: userInput => {
-                    if (userInput !== "") {
-                        return true
-                    }
-                    return "You have to provide an employee name"
-                }
-            },
-            {
-                type: 'input',
-                name: 'iDNumber',
-                message: "Enter employee ID number:",
-                default: "",
-                validate: userInput => {
-                    if (validator.isNumeric(userInput)) {
-                        return true;
-                    }
-                    return "Please enter a valid number."
-                }
-            },
-            {
-                type: 'input',
-                name: 'email',
-                message: "Enter employee's email address:",
-            },
-            {
-                type: 'input',
-                name: 'officeNum',
-                message: "Enter the manager's office number:",
-                default: "",
-                validate: userInput => {
-                    if (validator.isNumeric(userInput)) {
-                        return true;
-                    }
-                    return "Please enter a valid number."
-                }
-            },
-            // WHEN I enter the team manager’s name, employee ID, email address, and office number
-            // THEN I am presented with a menu with the option to add an engineer or an intern or to finish building my team
-            // 
-        ])
-        .then(response => {
-            const MyNewEmployee = new Employee(response.name, response.iDNumber, response.email);
-            const MyNewManager = new Manager(response.name, response.iDNumber, response.email, response.officeNum);
-            teamArray.push(MyNewManager);
-            console.log("User Inputs: " + MyNewEmployee);
-            console.log("New Array: " + teamArray);
-            // what do you want to do next/ 
-            promptMainMenu()
-
-                .catch(error => {
-                    if (error.isTtyError) {
-                        return console.log(error.message)
-                    } else {
-                        return "unknown error involved"
-                    }
-                })
-        }).catch(error => {
-            if (error.isTtyError) {
-                return console.log(error.message)
-            } else {
-                return "unknown error involved"
-            }
-        });
-}
-
 // WHEN I am prompted for my team members and their information
 // THEN an HTML file is generated that displays a nicely formatted team roster based on user input
 const generateTeam = (teamArray) => {
+    const cardArray = [];
     function generateManagerHTML(manager) {
         return ` 
         <div class="column is-4">
@@ -340,10 +340,7 @@ const generateTeam = (teamArray) => {
         `;
     }
 
-    const cardArray = [];
-
-    cardArray.push(
-        teamArray
+    cardArray.push(teamArray
         .filter(teamMember => teamMember.getRole() === "Manager")
         .map(manager => generateManagerHTML(manager))
     )
@@ -358,8 +355,7 @@ const generateTeam = (teamArray) => {
         .map(intern => generateInternHTML(intern))
     )
 
-    return cardArray;
-
+    return cardArray; 
 }
 
 
@@ -382,11 +378,8 @@ const template = `
             <p class="title is-size-1 has-text-weight-bold	">
                 Team Line-up
             </p>
-
         </div>
     </section>
-
-
     <div class="columns mt-1 is-flex-direction-row is-flex-wrap-wrap is-justify-content-center">
     ${generateTeam(cardArray)}
     </div>
