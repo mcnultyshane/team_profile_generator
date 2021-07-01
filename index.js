@@ -93,7 +93,7 @@ const promptMainMenu = () => {
             choices: ["Engineer", "Intern", "Team Finished"],
         }, ])
         .then(responses => {
-            console.log("Your choice: " + responses.toString())
+            // console.log("Your choice: " + responses.toString())
             switch (responses.whichTeamMem) {
                 case "Engineer":
                     promptEngineer();
@@ -246,7 +246,7 @@ function generateManagerHTML(manager) {
                     </div>
                     <div class="media-content">
                         <p class="title is-5">${manager.getName()}</p>
-                        <p class="subtitle is-6 ">ID #: </p>
+                        <p class="subtitle is-6 ">ID #: ${manager.getID()} </p>
 
                     </div>
                 </div>
@@ -281,8 +281,7 @@ function generateEngineerHTML(engineer) {
                     </div>
                     <div class="media-content">
                         <p class="title is-5">${engineer.getName()}</p>
-                        <p class="subtitle is-6 ">ID #:${engineer.getID()} </p>
-        
+                        <p class="subtitle is-6 ">ID #: ${engineer.getID()} </p>
                     </div>
                 </div>
                 <div class="content">
@@ -291,7 +290,7 @@ function generateEngineerHTML(engineer) {
                     </a>
                     <br>
                     Github Username:
-                    <a class="is-clickable" href="github.com/${engineer.getGithub()}">Github account: ${engineer.getGithub()}</a>
+                    <a class="is-clickable" href="https://github.com/${engineer.getGithub()}">${engineer.getGithub()}</a>
                 </div>
             </div>
         </div>
@@ -318,7 +317,6 @@ function generateInternHTML(intern) {
                 <div class="media-content">
                     <p class="title is-5">${intern.getName()}</p>
                     <p class="subtitle is-6 ">ID #: ${intern.getID()}</p>
-
                 </div>
             </div>
             <div class="content">
@@ -337,7 +335,7 @@ function generateInternHTML(intern) {
 // WHEN I am prompted for my team members and their information
 // THEN an HTML file is generated that displays a nicely formatted team roster based on user input
 const generateTeam = (teamArray) => {
-    console.log("this is line 236:" + teamArray);
+    // console.log("this is line 236:" + teamArray);
     const cardArray = [];
 
     cardArray.push(teamArray
