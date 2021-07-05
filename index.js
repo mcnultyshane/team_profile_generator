@@ -63,8 +63,8 @@ const promptManager = () => {
             const MyNewEmployee = new Employee(response.name, response.idNumber, response.email);
             const MyNewManager = new Manager(response.name, response.idNumber, response.email, response.officeNum);
             teamArray.push(MyNewManager);
-            console.log("User Inputs: " + MyNewEmployee);
-            console.log("New Array: " + teamArray);
+            // console.log("User Inputs: " + MyNewEmployee);
+            // console.log("New Array: " + teamArray);
             // what do you want to do next/ 
             promptMainMenu()
 
@@ -169,9 +169,9 @@ const promptIntern = () => {
             },
         ])
         .then(intResponses => {
-            console.log("These are the Intern Inputs: " + JSON.stringify(intResponses))
+            // console.log("These are the Intern Inputs: " + JSON.stringify(intResponses))
             const MyNewIntern = new Intern(intResponses.intName, intResponses.intIdNumber, intResponses.intEmail, intResponses.schoolIntern)
-            console.log("Intern Inputs: " + intResponses);
+            // console.log("Intern Inputs: " + intResponses);
             teamArray.push(MyNewIntern);
 
             promptMainMenu();
@@ -220,7 +220,7 @@ const promptEngineer = () => {
         ])
         .then(engResponses => {
             const MyNewEngineer = new Engineer(engResponses.engName, engResponses.engIdNum, engResponses.engEmail, engResponses.engGithub)
-            console.log("Engineer Inputs: " + JSON.stringify(engResponses.engName, engResponses.engIdNum, engResponses.engEmail, engResponses.engGithub))
+            // console.log("Engineer Inputs: " + JSON.stringify(engResponses.engName, engResponses.engIdNum, engResponses.engEmail, engResponses.engGithub))
             teamArray.push(MyNewEngineer);
 
             promptMainMenu();
@@ -353,7 +353,7 @@ const generateTeam = (teamArray) => {
         .map(intern => generateInternHTML(intern)).join('')
     );
 
-    console.log("I'm the card array" + cardArray);
+    // console.log("I'm the card array" + cardArray);
     fs.writeFile('./dist/index.html', template(cardArray), (error, data) =>
         error ? console.error(error) : console.log(data)
     );

@@ -17,7 +17,8 @@
 
 ## Usage
 
-    
+
+ The following is a walk though video of its uses: [Walkthough Video](https://drive.google.com/file/d/11rZFA3aCOQyVcsRCfiO68jp81j6CJWnb/view)
 
 
 ## Guidelines
