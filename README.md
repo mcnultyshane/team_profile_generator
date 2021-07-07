@@ -1,7 +1,8 @@
 # team_profile_generator
 
 ## Description
-    This project was designed by the University of Penn's Coding Bootcamp. We are looking to generate a high quality HTML formatted page that displays the inputted details of various members of a working team.  The idea is a manager beings to fill out prompts regarding a team tehy are looking to assemble.  Once the input fields are finished the program will generate a page with styled cards for each team member with all of their appropriate data listed.    
+
+This project was designed by the University of Penn's Coding Bootcamp. We are looking to generate a high quality HTML formatted page that displays the inputted details of various members of a working team.  The idea is a manager beings to fill out prompts regarding a team tehy are looking to assemble.  Once the input fields are finished the program will generate a page with styled cards for each team member with all of their appropriate data listed.    
 
 ### Table of Contents
 
@@ -11,9 +12,7 @@
 - [License](#license)
 
 ## Installation
-    
-    To begin please be sure to have node.js and npm installed on your system.
-    Once that is complete, please create a clone of this repository.  Then navigate to the cloned repository in your terminal.  Then install the required npm modules by running 'npm i' in your terminal.  Finally, type 'node index.js' to begin the generator and follow the prompts.  
+To begin please be sure to have node.js and npm installed on your system. Once that is complete, please create a clone of this repository.  Then navigate to the cloned repository in your terminal.  Then install the required npm modules by running 'npm i' in your terminal.  Finally, type 'node index.js' to begin the generator and follow the prompts.  
 
 ## Usage
 
